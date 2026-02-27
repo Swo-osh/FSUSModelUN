@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery — FSUS Model UN</title>
+    <link rel="icon" type="image/jpeg" href="favicon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --garnet: #782F40;
+            --gold: #CEB888;
+            --dark-garnet: #5A1F2E;
+            --light-gold: #E8D4A0;
+            --cream: #F5F1E8;
+            --charcoal: #2A2A2A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Film grain - static */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.35'/%3E%3C/svg%3E");
+            opacity: 0.15;
+            z-index: 9999;
+        }
+
+        /* Header */
+        header {
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            border-bottom: 8px solid var(--gold);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            background-color: var(--dark-garnet);
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(206, 184, 136, 0.25) 0%, transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(160, 60, 80, 0.5) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 100%, rgba(90, 31, 46, 0.8) 0%, transparent 60%),
+                repeating-linear-gradient(
+                    -45deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(0, 0, 0, 0.12) 3px,
+                    rgba(0, 0, 0, 0.12) 6px
+                ),
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(206, 184, 136, 0.06) 3px,
+                    rgba(206, 184, 136, 0.06) 6px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 8px,
+                    rgba(0,0,0,0.08) 8px,
+                    rgba(0,0,0,0.08) 9px
+                );
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--light-gold);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 0.02em;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+            margin-bottom: 0.5rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--light-gold);
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--charcoal);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav li { position: relative; }
+
+        nav a {
+            display: block;
+            padding: 1.2rem 2rem;
+            color: var(--cream);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: var(--gold);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--gold);
+            background: rgba(206, 184, 136, 0.1);
+        }
+
+        nav a:hover::before, nav a.active::before {
+            width: 80%;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--garnet);
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+        }
+
+        /* Gallery Layout */
+        .gallery-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        /* Photo Gallery */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--garnet) 0%, var(--dark-garnet) 100%);
+            border: 3px solid var(--gold);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            object-fit: cover;
+        }
+
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(206, 184, 136, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            border-color: var(--light-gold);
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Instagram Section */
+        .instagram-section {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .instagram-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--garnet);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .instagram-embed {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 2px;
+            box-shadow: 0 8px 30px rgba(120, 47, 64, 0.1);
+            border-left: 6px solid var(--gold);
+        }
+
+        .instagram-embed iframe {
+            max-width: 100%;
+        }
+
+        .instagram-placeholder {
+            background: linear-gradient(135deg, var(--garnet) 0%, var(--dark-garnet) 100%);
+            border: 3px solid var(--gold);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: var(--light-gold);
+            font-style: italic;
+            border-radius: 2px;
+        }
+
+        .instagram-placeholder p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .instagram-placeholder small {
+            display: block;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-garnet);
+            color: var(--light-gold);
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 5rem;
+            border-top: 6px solid var(--gold);
+        }
+
+        footer p { margin-bottom: 0.5rem; font-size: 1rem; }
+
+        .footer-links { margin-top: 1.5rem; }
+
+        .footer-links a {
+            color: var(--gold);
+            text-decoration: none;
+            margin: 0 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--light-gold);
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .gallery-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .instagram-section {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .subtitle { font-size: 1rem; }
+            nav ul {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            nav a {
+                padding: 0.75rem 1rem;
+                font-size: 0.8rem;
+            }
+            .photo-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>FSUS Model UN</h1>
+        <p class="subtitle">Gallery</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="committees.html">Committees</a></li>
+            <li><a href="index.html#team">Team</a></li>
+            <li><a href="gallery.html" class="active">Gallery</a></li>
+            <li><a href="index.html#resources">Resources</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href="https://couchmun.com/" target="_blank">Tools</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2>Photos & Instagram</h2>
+        
+        <div class="gallery-layout">
+            <!-- Photo Gallery -->
+            <div class="photo-gallery">
+                <img src="Gallery1.jpg" alt="Gallery Image 1" class="gallery-item">
+                <img src="Gallery2.jpg" alt="Gallery Image 2" class="gallery-item">
+                <img src="Gallery3.jpg" alt="Gallery Image 3" class="gallery-item">
+                <img src="Gallery4.jpg" alt="Gallery Image 4" class="gallery-item">
+            </div>
+
+            <!-- Instagram Section -->
+            <div class="instagram-section">
+                <h3>Follow Us</h3>
+                <div class="instagram-embed">
+                    <!-- Instagram Embed Placeholder -->
+                    <div class="instagram-placeholder">
+                        <p>📸 Instagram Feed</p>
+                        <small>Replace this with your Instagram embed code from instagram.com → share → embed</small>
+                        <small style="margin-top: 1rem;">@fhmun_</small>
+                    </div>
+                    
+                    <!-- TO ADD YOUR INSTAGRAM EMBED:
+                    1. Go to instagram.com and find the post you want to embed
+                    2. Click the three dots (•••) on the post
+                    3. Click "Embed"
+                    4. Copy the embed code
+                    5. Paste it here, replacing the placeholder div above
+                    
+                    Example:
+                    <blockquote class="instagram-media" data-instgrm-permalink="YOUR_POST_URL" ...>
+                    -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Made by Ayush More</p>
+        <p style="font-weight: 700; font-size: 1.3rem; color: var(--gold); margin-top: 1rem; margin-bottom: 0.75rem;">GO NOLES</p>
+        <div style="max-width: 150px; margin: 0 auto 1.5rem auto;">
+            <img src="footer-banner.png" alt="FSU Banner" style="width: 100%; height: auto; display: block;">
+        </div>
+        <p>Florida State University Schools</p>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#events">Events</a>
+            <a href="index.html#contact">Contact</a>
+        </div>
+    </footer>
+</body>
+</html>

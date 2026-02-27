@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Committees — FSUS Model UN</title>
+    <link rel="icon" type="image/jpeg" href="favicon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --garnet: #782F40;
+            --gold: #CEB888;
+            --dark-garnet: #5A1F2E;
+            --light-gold: #E8D4A0;
+            --cream: #F5F1E8;
+            --charcoal: #2A2A2A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Film grain - static */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.35'/%3E%3C/svg%3E");
+            opacity: 0.15;
+            z-index: 9999;
+        }
+
+        /* Header */
+        header {
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            border-bottom: 8px solid var(--gold);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            background-color: var(--dark-garnet);
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(206, 184, 136, 0.25) 0%, transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(160, 60, 80, 0.5) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 100%, rgba(90, 31, 46, 0.8) 0%, transparent 60%),
+                repeating-linear-gradient(
+                    -45deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(0, 0, 0, 0.12) 3px,
+                    rgba(0, 0, 0, 0.12) 6px
+                ),
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(206, 184, 136, 0.06) 3px,
+                    rgba(206, 184, 136, 0.06) 6px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 8px,
+                    rgba(0,0,0,0.08) 8px,
+                    rgba(0,0,0,0.08) 9px
+                );
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--light-gold);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 0.02em;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+            margin-bottom: 0.5rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--light-gold);
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--charcoal);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav li { position: relative; }
+
+        nav a {
+            display: block;
+            padding: 1.2rem 2rem;
+            color: var(--cream);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: var(--gold);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--gold);
+            background: rgba(206, 184, 136, 0.1);
+        }
+
+        nav a:hover::before, nav a.active::before {
+            width: 80%;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Intro */
+        .intro {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .intro p {
+            font-size: 1.2rem;
+            color: #555;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.9;
+        }
+
+        /* Section heading */
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--garnet);
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+        }
+
+        /* Committee Cards */
+        .committees-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .committee-card {
+            background: white;
+            border-radius: 2px;
+            box-shadow: 0 8px 30px rgba(120, 47, 64, 0.08);
+            border-top: 6px solid var(--garnet);
+            overflow: hidden;
+            transition: all 0.4s ease;
+            animation: fadeInUp 0.8s ease-out both;
+            cursor: pointer;
+        }
+
+        .committee-card:nth-child(2) { animation-delay: 0.1s; }
+        .committee-card:nth-child(3) { animation-delay: 0.2s; }
+        .committee-card:nth-child(4) { animation-delay: 0.3s; }
+
+        .committee-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(120, 47, 64, 0.15);
+            border-top-color: var(--gold);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--garnet), var(--dark-garnet));
+            padding: 1.5rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 4px,
+                rgba(206, 184, 136, 0.05) 4px,
+                rgba(206, 184, 136, 0.05) 8px
+            );
+        }
+
+        .card-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-header .acronym {
+            font-size: 0.85rem;
+            color: var(--light-gold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+            margin-top: 0.25rem;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .card-body p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .card-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .card-meta span {
+            font-size: 0.95rem;
+            color: var(--garnet);
+            font-weight: 600;
+        }
+
+        .card-meta span em {
+            color: #666;
+            font-style: normal;
+            font-weight: 400;
+        }
+
+        /* Modal Popup */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(42, 42, 42, 0.85);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 4px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--garnet), var(--dark-garnet));
+            padding: 2.5rem 3rem;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 6px solid var(--gold);
+        }
+
+        .modal-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 4px,
+                rgba(206, 184, 136, 0.05) 4px,
+                rgba(206, 184, 136, 0.05) 8px
+            );
+        }
+
+        .modal-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            font-weight: 900;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-header .acronym {
+            font-size: 1rem;
+            color: var(--light-gold);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            background: transparent;
+            border: none;
+            color: var(--gold);
+            font-size: 2.5rem;
+            cursor: pointer;
+            z-index: 2;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: var(--light-gold);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 3rem;
+        }
+
+        .modal-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, var(--garnet) 0%, var(--dark-garnet) 100%);
+            border: 3px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light-gold);
+            font-style: italic;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            border-radius: 2px;
+        }
+
+        .modal-description {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: #555;
+            margin-bottom: 2rem;
+        }
+
+        .modal-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: rgba(206, 184, 136, 0.05);
+            border-radius: 2px;
+            border-left: 4px solid var(--gold);
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .detail-item strong {
+            color: var(--garnet);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .detail-item span {
+            color: #666;
+            font-size: 1.05rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            padding-top: 1rem;
+        }
+
+        .download-btn {
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--dark-garnet);
+            color: var(--gold);
+            fill: var(--gold);
+            border: 0;
+            border-radius: 6px;
+            padding: 0.75rem 1.25rem;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+        }
+
+        .download-btn:hover {
+            background: var(--garnet);
+        }
+
+        .download-btn:active {
+            border-color: var(--gold);
+        }
+
+        .download-btn svg {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-garnet);
+            color: var(--light-gold);
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 5rem;
+            border-top: 6px solid var(--gold);
+        }
+
+        footer p { margin-bottom: 0.5rem; font-size: 1rem; }
+
+        .footer-links { margin-top: 1.5rem; }
+
+        .footer-links a {
+            color: var(--gold);
+            text-decoration: none;
+            margin: 0 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--light-gold);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .committees-grid { grid-template-columns: 1fr; }
+            nav ul {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            nav a {
+                padding: 0.75rem 1rem;
+                font-size: 0.8rem;
+            }
+            .modal-content {
+                margin: 1rem;
+                max-height: 95vh;
+            }
+            .modal-header {
+                padding: 2rem 1.5rem;
+            }
+            .modal-header h3 {
+                font-size: 1.8rem;
+            }
+            .modal-body {
+                padding: 1.5rem;
+            }
+            .modal-details {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
+            .close-btn {
+                top: 1rem;
+                right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>FSUS Model UN</h1>
+        <p class="subtitle">FHMUN Committees</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="committees.html" class="active">Committees</a></li>
+            <li><a href="index.html#team">Team</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="index.html#resources">Resources</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href="https://couchmun.com/" target="_blank">Tools</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="intro">
+            <h2>FHMUN Committees</h2>
+            <p>[Brief intro about FHMUN committees — e.g. "FHMUN will feature a range of committees covering global issues. Delegates will debate, negotiate, and draft resolutions on some of the world's most pressing challenges."]</p>
+        </div>
+
+        <div class="committees-grid">
+
+            <div class="committee-card" onclick="openModal(0)">
+                <div class="card-header">
+                    <h3>[Committee Name]</h3>
+                    <div class="acronym">[Acronym]</div>
+                </div>
+                <div class="card-body">
+                    <p>[Description of this committee's focus, the issues it will debate, and what delegates can expect.]</p>
+                    <div class="card-meta">
+                        <span>Topic A: <em>[Insert topic]</em></span>
+                        <span>Topic B: <em>[Insert topic]</em></span>
+                        <span>Committee Size: <em>[Insert number] delegates</em></span>
+                        <span>Chair: <em>[Insert name]</em></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="committee-card" onclick="openModal(1)">
+                <div class="card-header">
+                    <h3>[Committee Name]</h3>
+                    <div class="acronym">[Acronym]</div>
+                </div>
+                <div class="card-body">
+                    <p>[Description of this committee's focus, the issues it will debate, and what delegates can expect.]</p>
+                    <div class="card-meta">
+                        <span>Topic A: <em>[Insert topic]</em></span>
+                        <span>Topic B: <em>[Insert topic]</em></span>
+                        <span>Committee Size: <em>[Insert number] delegates</em></span>
+                        <span>Chair: <em>[Insert name]</em></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="committee-card" onclick="openModal(2)">
+                <div class="card-header">
+                    <h3>[Committee Name]</h3>
+                    <div class="acronym">[Acronym]</div>
+                </div>
+                <div class="card-body">
+                    <p>[Description of this committee's focus, the issues it will debate, and what delegates can expect.]</p>
+                    <div class="card-meta">
+                        <span>Topic A: <em>[Insert topic]</em></span>
+                        <span>Topic B: <em>[Insert topic]</em></span>
+                        <span>Committee Size: <em>[Insert number] delegates</em></span>
+                        <span>Chair: <em>[Insert name]</em></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>Made by Ayush More</p>
+        <p style="font-weight: 700; font-size: 1.3rem; color: var(--gold); margin-top: 1rem; margin-bottom: 0.75rem;">GO NOLES</p>
+        <div style="max-width: 150px; margin: 0 auto 1.5rem auto;">
+            <img src="footer-banner.png" alt="FSU Banner" style="width: 100%; height: auto; display: block;">
+        </div>
+        <p>Florida State University Schools</p>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#events">Events</a>
+            <a href="index.html#contact">Contact</a>
+        </div>
+    </footer>
+
+    <!-- Modal Popup -->
+    <div id="committeeModal" class="modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+                <h3 id="modalTitle">[Committee Name]</h3>
+                <div class="acronym" id="modalAcronym">[Acronym]</div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image" id="modalImage">[Committee Image Placeholder]</div>
+                <div class="modal-description" id="modalDescription">
+                    [Full description of the committee]
+                </div>
+                <div class="modal-details">
+                    <div class="detail-item">
+                        <strong>Topic A</strong>
+                        <span id="modalTopicA">[Topic A]</span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Topic B</strong>
+                        <span id="modalTopicB">[Topic B]</span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Committee Size</strong>
+                        <span id="modalSize">[Size]</span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Chair</strong>
+                        <span id="modalChair">[Chair Name]</span>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <a href="#" class="download-btn" id="modalDownload">
+                        <svg viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" d="M18.507 19.853V6.034C18.5116 5.49905 18.3034 4.98422 17.9283 4.60277C17.5532 4.22131 17.042 4.00449 16.507 4H8.50705C7.9721 4.00449 7.46085 4.22131 7.08577 4.60277C6.7107 4.98422 6.50252 5.49905 6.50705 6.034V19.853C6.45951 20.252 6.65541 20.6407 7.00441 20.8399C7.35342 21.039 7.78773 21.0099 8.10705 20.766L11.907 17.485C12.2496 17.1758 12.7705 17.1758 13.113 17.485L16.9071 20.767C17.2265 21.0111 17.6611 21.0402 18.0102 20.8407C18.3593 20.6413 18.5551 20.2522 18.507 19.853Z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg>
+                        <span>Download Background Guide</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Committee data - UPDATE THIS WITH YOUR ACTUAL COMMITTEE INFORMATION
+        const committees = [
+            {
+                name: "[Committee Name 1]",
+                acronym: "[Acronym 1]",
+                description: "[Full description of committee 1 - you can make this much longer and more detailed than the card preview]",
+                topicA: "[Topic A]",
+                topicB: "[Topic B]",
+                size: "[Number] delegates",
+                chair: "[Chair Name]",
+                downloadLink: "#"
+            },
+            {
+                name: "[Committee Name 2]",
+                acronym: "[Acronym 2]",
+                description: "[Full description of committee 2 - you can make this much longer and more detailed than the card preview]",
+                topicA: "[Topic A]",
+                topicB: "[Topic B]",
+                size: "[Number] delegates",
+                chair: "[Chair Name]",
+                downloadLink: "#"
+            },
+            {
+                name: "[Committee Name 3]",
+                acronym: "[Acronym 3]",
+                description: "[Full description of committee 3 - you can make this much longer and more detailed than the card preview]",
+                topicA: "[Topic A]",
+                topicB: "[Topic B]",
+                size: "[Number] delegates",
+                chair: "[Chair Name]",
+                downloadLink: "#"
+            }
+        ];
+
+        function openModal(index) {
+            const committee = committees[index];
+            const modal = document.getElementById('committeeModal');
+            
+            document.getElementById('modalTitle').textContent = committee.name;
+            document.getElementById('modalAcronym').textContent = committee.acronym;
+            document.getElementById('modalDescription').textContent = committee.description;
+            document.getElementById('modalTopicA').textContent = committee.topicA;
+            document.getElementById('modalTopicB').textContent = committee.topicB;
+            document.getElementById('modalSize').textContent = committee.size;
+            document.getElementById('modalChair').textContent = committee.chair;
+            document.getElementById('modalDownload').href = committee.downloadLink;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(event) {
+            if (!event || event.target.id === 'committeeModal' || event.target.classList.contains('close-btn')) {
+                const modal = document.getElementById('committeeModal');
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

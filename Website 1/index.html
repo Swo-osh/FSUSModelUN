@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FSUS Model UN</title>
+    <link rel="icon" type="image/jpeg" href="favicon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --garnet: #782F40;
+            --gold: #CEB888;
+            --dark-garnet: #5A1F2E;
+            --light-gold: #E8D4A0;
+            --cream: #F5F1E8;
+            --charcoal: #2A2A2A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Film grain overlay - static */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.35'/%3E%3C/svg%3E");
+            opacity: 0.15;
+            z-index: 9999;
+        }
+
+        /* Header */
+        header {
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            border-bottom: 8px solid var(--gold);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            background-color: var(--dark-garnet);
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(206, 184, 136, 0.25) 0%, transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(160, 60, 80, 0.5) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 100%, rgba(90, 31, 46, 0.8) 0%, transparent 60%),
+                repeating-linear-gradient(
+                    -45deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(0, 0, 0, 0.12) 3px,
+                    rgba(0, 0, 0, 0.12) 6px
+                ),
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(206, 184, 136, 0.06) 3px,
+                    rgba(206, 184, 136, 0.06) 6px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 8px,
+                    rgba(0,0,0,0.08) 8px,
+                    rgba(0,0,0,0.08) 9px
+                );
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--light-gold);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 0.02em;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+            margin-bottom: 0.5rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--light-gold);
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--charcoal);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav li {
+            position: relative;
+        }
+
+        nav a {
+            display: block;
+            padding: 1.2rem 2rem;
+            color: var(--cream);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: var(--gold);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover {
+            color: var(--gold);
+            background: rgba(206, 184, 136, 0.1);
+        }
+
+        nav a:hover::before {
+            width: 80%;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Section Styles */
+        section {
+            margin-bottom: 5rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--garnet);
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+        }
+
+        /* About Section */
+        .about-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 2px;
+            box-shadow: 0 8px 30px rgba(120, 47, 64, 0.1);
+            border-left: 6px solid var(--gold);
+            line-height: 1.9;
+            font-size: 1.1rem;
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+            color: var(--charcoal);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contact-icon {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            color: var(--garnet);
+            flex-shrink: 0;
+        }
+
+        .icon {
+            display: inline-block;
+            font-size: 1.3rem;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 2px;
+            box-shadow: 0 8px 30px rgba(120, 47, 64, 0.08);
+            border-top: 5px solid var(--garnet);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card.clickable {
+            cursor: pointer;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(206, 184, 136, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 45px rgba(120, 47, 64, 0.15);
+            border-top-color: var(--gold);
+        }
+
+        .card.clickable:hover::before {
+            opacity: 1;
+        }
+
+        .card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--garnet);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .card p {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .team-card-content {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .team-image {
+            width: 100px;
+            height: 100px;
+            min-width: 100px;
+            background: linear-gradient(135deg, var(--garnet) 0%, var(--dark-garnet) 100%);
+            border: 3px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light-gold);
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+
+        .team-info {
+            flex: 1;
+        }
+
+        /* Gallery Grid */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--garnet) 0%, var(--dark-garnet) 100%);
+            border: 3px solid var(--gold);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            object-fit: cover;
+        }
+
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(206, 184, 136, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            border-color: var(--light-gold);
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Downloads Section */
+        .downloads-list {
+            background: white;
+            padding: 2rem;
+            border-radius: 2px;
+            box-shadow: 0 8px 30px rgba(120, 47, 64, 0.08);
+        }
+
+        .download-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .download-item:last-child {
+            border-bottom: none;
+        }
+
+        .download-item:hover {
+            background: rgba(206, 184, 136, 0.05);
+            padding-left: 2rem;
+        }
+
+        .download-item h4 {
+            color: var(--garnet);
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .download-item p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .download-btn {
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--dark-garnet);
+            color: var(--gold);
+            fill: var(--gold);
+            border: 0;
+            border-radius: 6px;
+            padding: 0.6rem 1rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+        }
+
+        .download-btn:hover {
+            background: var(--garnet);
+        }
+
+        .download-btn:active {
+            border-color: var(--gold);
+        }
+
+        .download-btn svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-garnet);
+            color: var(--light-gold);
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 5rem;
+            border-top: 6px solid var(--gold);
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .footer-links {
+            margin-top: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--gold);
+            text-decoration: none;
+            margin: 0 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--light-gold);
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            nav ul {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            nav a {
+                padding: 0.75rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .about-content {
+                padding: 2rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>FSUS Model UN</h1>
+        <p class="subtitle">Florida State University Schools</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="committees.html">Committees</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="#resources">Resources</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="https://couchmun.com/" target="_blank">Tools</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section id="events">
+            <h2>Upcoming Events</h2>
+            <div class="cards-grid">
+                <div class="card clickable" onclick="window.location.href='committees.html'">
+                    <h3>FHMUN</h3>
+                    <p><strong>Date:</strong> April 3, 2026</p>
+                    <p><strong>Location:</strong> FSUS</p>
+                    <p>FSUS will be holding its first Model UN conference!</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="team">
+            <h2>Our Team</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>Secretary-General</h3>
+                    <div class="team-card-content">
+                        <div class="team-image">[Photo]</div>
+                        <div class="team-info">
+                            <p><strong>Name:</strong> Sreyas Narayan</p>
+                            <p>Class of 2027</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Deputy Sec-Gen</h3>
+                    <div class="team-card-content">
+                        <div class="team-image">[Photo]</div>
+                        <div class="team-info">
+                            <p><strong>Name:</strong> Adit More</p>
+                            <p>Class of 2026</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>USG of Fundraising</h3>
+                    <div class="team-card-content">
+                        <div class="team-image">[Photo]</div>
+                        <div class="team-info">
+                            <p><strong>Name:</strong> Ayush More</p>
+                            <p>Class of 2026</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>USG of Communications</h3>
+                    <div class="team-card-content">
+                        <div class="team-image">[Photo]</div>
+                        <div class="team-info">
+                            <p><strong>Name:</strong> Alyssa Bowman</p>
+                            <p>Class of 2026</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="resources">
+            <h2>Downloads & Resources</h2>
+            <div class="downloads-list">
+                <div class="download-item">
+                    <div>
+                        <h4>Meeting Schedule</h4>
+                        <p>Fall 2025 calendar of all meetings and events</p>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <svg viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" d="M18.507 19.853V6.034C18.5116 5.49905 18.3034 4.98422 17.9283 4.60277C17.5532 4.22131 17.042 4.00449 16.507 4H8.50705C7.9721 4.00449 7.46085 4.22131 7.08577 4.60277C6.7107 4.98422 6.50252 5.49905 6.50705 6.034V19.853C6.45951 20.252 6.65541 20.6407 7.00441 20.8399C7.35342 21.039 7.78773 21.0099 8.10705 20.766L11.907 17.485C12.2496 17.1758 12.7705 17.1758 13.113 17.485L16.9071 20.767C17.2265 21.0111 17.6611 21.0402 18.0102 20.8407C18.3593 20.6413 18.5551 20.2522 18.507 19.853Z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg>
+                        <span>Download</span>
+                    </a>
+                </div>
+                <div class="download-item">
+                    <div>
+                        <h4>Position Papers Guide</h4>
+                        <p>Template and guidelines for writing position papers</p>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <svg viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" d="M18.507 19.853V6.034C18.5116 5.49905 18.3034 4.98422 17.9283 4.60277C17.5532 4.22131 17.042 4.00449 16.507 4H8.50705C7.9721 4.00449 7.46085 4.22131 7.08577 4.60277C6.7107 4.98422 6.50252 5.49905 6.50705 6.034V19.853C6.45951 20.252 6.65541 20.6407 7.00441 20.8399C7.35342 21.039 7.78773 21.0099 8.10705 20.766L11.907 17.485C12.2496 17.1758 12.7705 17.1758 13.113 17.485L16.9071 20.767C17.2265 21.0111 17.6611 21.0402 18.0102 20.8407C18.3593 20.6413 18.5551 20.2522 18.507 19.853Z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg>
+                        <span>Download</span>
+                    </a>
+                </div>
+                <div class="download-item">
+                    <div>
+                        <h4>Rules of Procedure</h4>
+                        <p>Official Model UN parliamentary procedures handbook</p>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <svg viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" d="M18.507 19.853V6.034C18.5116 5.49905 18.3034 4.98422 17.9283 4.60277C17.5532 4.22131 17.042 4.00449 16.507 4H8.50705C7.9721 4.00449 7.46085 4.22131 7.08577 4.60277C6.7107 4.98422 6.50252 5.49905 6.50705 6.034V19.853C6.45951 20.252 6.65541 20.6407 7.00441 20.8399C7.35342 21.039 7.78773 21.0099 8.10705 20.766L11.907 17.485C12.2496 17.1758 12.7705 17.1758 13.113 17.485L16.9071 20.767C17.2265 21.0111 17.6611 21.0402 18.0102 20.8407C18.3593 20.6413 18.5551 20.2522 18.507 19.853Z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg>
+                        <span>Download</span>
+                    </a>
+                </div>
+                <div class="download-item">
+                    <div>
+                        <h4>Conference Information</h4>
+                        <p>Details about upcoming conferences and registration</p>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <svg viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" d="M18.507 19.853V6.034C18.5116 5.49905 18.3034 4.98422 17.9283 4.60277C17.5532 4.22131 17.042 4.00449 16.507 4H8.50705C7.9721 4.00449 7.46085 4.22131 7.08577 4.60277C6.7107 4.98422 6.50252 5.49905 6.50705 6.034V19.853C6.45951 20.252 6.65541 20.6407 7.00441 20.8399C7.35342 21.039 7.78773 21.0099 8.10705 20.766L11.907 17.485C12.2496 17.1758 12.7705 17.1758 13.113 17.485L16.9071 20.767C17.2265 21.0111 17.6611 21.0402 18.0102 20.8407C18.3593 20.6413 18.5551 20.2522 18.507 19.853Z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg>
+                        <span>Download</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Get In Touch</h2>
+            <div class="about-content">
+                <p>
+                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <span><strong>Email:</strong> [Insert club email]</span>
+                </p>
+                <p>
+                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span><strong>Meeting Location:</strong> [Insert room/building]</span>
+                </p>
+                <p>
+                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span><strong>Meeting Time:</strong> Wednesdays 3:05-3:30 PM</span>
+                </p>
+                <p>
+                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    <span><strong>Social Media:</strong> @fsusmun_</span>
+                </p>
+                <p>[Add any additional contact information or a note about how interested students can reach out]</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>Made by Ayush More</p>
+        <p style="font-weight: 700; font-size: 1.3rem; color: var(--gold); margin-top: 1rem; margin-bottom: 0.75rem;">GO NOLES</p>
+        <div style="max-width: 150px; margin: 0 auto 1.5rem auto;">
+            <img src="footer-banner.png" alt="FSU Banner" style="width: 100%; height: auto; display: block;">
+        </div>
+        <p>Florida State University Schools</p>
+        <div class="footer-links">
+            <a href="#about">About</a>
+            <a href="#events">Events</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </footer>
+</body>
+</html>
