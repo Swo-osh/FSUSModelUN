@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FSUS Model UN</title>
+    <link rel="icon" type="image/jpeg" href="favicon.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -45,12 +46,37 @@
 
         /* Header */
         header {
-            background: linear-gradient(135deg, var(--garnet) 0%, var(--dark-garnet) 100%);
             padding: 4rem 2rem;
             text-align: center;
             position: relative;
             border-bottom: 8px solid var(--gold);
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            background-color: var(--dark-garnet);
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(206, 184, 136, 0.25) 0%, transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(160, 60, 80, 0.5) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 100%, rgba(90, 31, 46, 0.8) 0%, transparent 60%),
+                repeating-linear-gradient(
+                    -45deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(0, 0, 0, 0.12) 3px,
+                    rgba(0, 0, 0, 0.12) 6px
+                ),
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(206, 184, 136, 0.06) 3px,
+                    rgba(206, 184, 136, 0.06) 6px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 8px,
+                    rgba(0,0,0,0.08) 8px,
+                    rgba(0,0,0,0.08) 9px
+                );
         }
 
         header::after {
@@ -214,6 +240,24 @@
         .about-content p {
             margin-bottom: 1.5rem;
             color: var(--charcoal);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contact-icon {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            color: var(--garnet);
+            flex-shrink: 0;
+        }
+
+        .icon {
+            display: inline-block;
+            font-size: 1.3rem;
+            margin-right: 0.5rem;
+            vertical-align: middle;
         }
 
         /* Cards Grid */
@@ -235,6 +279,10 @@
             overflow: hidden;
         }
 
+        .card.clickable {
+            cursor: pointer;
+        }
+
         .card::before {
             content: '';
             position: absolute;
@@ -253,7 +301,7 @@
             border-top-color: var(--gold);
         }
 
-        .card:hover::before {
+        .card.clickable:hover::before {
             opacity: 1;
         }
 
@@ -270,6 +318,31 @@
             line-height: 1.8;
         }
 
+        .team-card-content {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .team-image {
+            width: 100px;
+            height: 100px;
+            min-width: 100px;
+            background: linear-gradient(135deg, var(--garnet) 0%, var(--dark-garnet) 100%);
+            border: 3px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light-gold);
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+
+        .team-info {
+            flex: 1;
+        }
+
         /* Gallery Grid */
         .gallery {
             display: grid;
@@ -279,18 +352,14 @@
         }
 
         .gallery-item {
-            aspect-ratio: 4/3;
+            width: 100%;
+            height: 200px;
             background: linear-gradient(135deg, var(--garnet) 0%, var(--dark-garnet) 100%);
             border: 3px solid var(--gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--light-gold);
-            font-style: italic;
-            font-size: 1rem;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            object-fit: cover;
         }
 
         .gallery-item::after {
@@ -300,6 +369,7 @@
             background: rgba(206, 184, 136, 0.1);
             opacity: 0;
             transition: opacity 0.3s ease;
+            pointer-events: none;
         }
 
         .gallery-item:hover {
@@ -349,52 +419,35 @@
         }
 
         .download-btn {
-            min-width: 120px;
-            position: relative;
             cursor: pointer;
-            padding: 12px 17px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--dark-garnet);
+            color: var(--gold);
+            fill: var(--gold);
             border: 0;
-            border-radius: 7px;
-            box-shadow: inset 0 0 0 1px rgba(206, 184, 136, 0.3);
-            background: radial-gradient(
-                ellipse at bottom,
-                var(--garnet) 0%,
-                var(--dark-garnet) 45%
-            );
-            color: rgba(206, 184, 136, 0.85);
+            border-radius: 6px;
+            padding: 0.6rem 1rem;
+            font-weight: 700;
+            font-size: 0.9rem;
             text-decoration: none;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.05em;
-            transition: all 1s cubic-bezier(0.15, 0.83, 0.66, 1);
-            display: inline-block;
-        }
-
-        .download-btn::before {
-            content: "";
-            width: 70%;
-            height: 1px;
-            position: absolute;
-            bottom: 0;
-            left: 15%;
-            background: linear-gradient(
-                90deg,
-                rgba(206, 184, 136, 0) 0%,
-                var(--gold) 50%,
-                rgba(206, 184, 136, 0) 100%
-            );
-            opacity: 0.2;
-            transition: all 1s cubic-bezier(0.15, 0.83, 0.66, 1);
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
         }
 
         .download-btn:hover {
-            color: var(--light-gold);
-            transform: scale(1.1) translateY(-3px);
+            background: var(--garnet);
         }
 
-        .download-btn:hover::before {
-            opacity: 1;
+        .download-btn:active {
+            border-color: var(--gold);
+        }
+
+        .download-btn svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
         }
 
         /* Footer */
@@ -440,11 +493,13 @@
             }
 
             nav ul {
-                flex-direction: column;
+                flex-direction: row;
+                flex-wrap: wrap;
             }
 
             nav a {
-                padding: 1rem;
+                padding: 0.75rem 1rem;
+                font-size: 0.8rem;
             }
 
             .about-content {
@@ -469,30 +524,21 @@
 
     <nav>
         <ul>
-            <li><a href="#about">About</a></li>
-            <li><a href="#events">Events</a></li>
+            <li><a href="committees.html">Committees</a></li>
             <li><a href="#team">Team</a></li>
-            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
             <li><a href="#resources">Resources</a></li>
             <li><a href="#contact">Contact</a></li>
+            <li><a href="https://couchmun.com/" target="_blank">Tools</a></li>
         </ul>
     </nav>
 
     <div class="container">
-        <section id="about">
-            <h2>About Us</h2>
-            <div class="about-content">
-                <p>[Insert club description here - your mission, what Model UN is, why students should join, meeting times, etc.]</p>
-                <p>[Add more details about your club's history, achievements, and what makes FSUS Model UN special.]</p>
-                <p>[Include information about how to join, membership requirements, or any other important details.]</p>
-            </div>
-        </section>
-
         <section id="events">
             <h2>Upcoming Events</h2>
             <div class="cards-grid">
-                <div class="card">
-                    <h3>FSUSMUN</h3>
+                <div class="card clickable" onclick="window.location.href='committees.html'">
+                    <h3>FHMUN</h3>
                     <p><strong>Date:</strong> April 3, 2026</p>
                     <p><strong>Location:</strong> FSUS</p>
                     <p>FSUS will be holding its first Model UN conference!</p>
@@ -505,36 +551,44 @@
             <div class="cards-grid">
                 <div class="card">
                     <h3>Secretary-General</h3>
-                    <p><strong>Name:</strong> Sreyas Narayan</p>
-                    <p>Class of 2027</p>
+                    <div class="team-card-content">
+                        <img src="secgen.jpg" alt="Sreyas Narayan" class="team-image" style="object-fit: cover;">
+                        <div class="team-info">
+                            <p><strong>Name:</strong> Sreyas Narayan</p>
+                            <p>Class of 2027</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="card">
                     <h3>Deputy Sec-Gen</h3>
-                    <p><strong>Name:</strong> Adit More</p>
-                    <p>Class of 2026</p>
+                    <div class="team-card-content">
+                        <img src="deputy.jpg" alt="Adit More" class="team-image" style="object-fit: cover;">
+                        <div class="team-info">
+                            <p><strong>Name:</strong> Adit More</p>
+                            <p>Class of 2026</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="card">
                     <h3>USG of Fundraising</h3>
-                    <p><strong>Name:</strong> Ayush More</p>
-                    <p>Class of 2026</p>
+                    <div class="team-card-content">
+                        <img src="fund.jpg" alt="Ayush More" class="team-image" style="object-fit: cover;">
+                        <div class="team-info">
+                            <p><strong>Name:</strong> Ayush More</p>
+                            <p>Class of 2026</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="card">
                     <h3>USG of Communications</h3>
-                    <p><strong>Name:</strong> Alyssa Bowman</p>
-                    <p>Class of 2026</p>
+                    <div class="team-card-content">
+                        <img src="social.jpg" alt="Alyssa Bowman" class="team-image" style="object-fit: cover;">
+                        <div class="team-info">
+                            <p><strong>Name:</strong> Alyssa Bowman</p>
+                            <p>Class of 2026</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </section>
-
-        <section id="gallery">
-            <h2>Photo Gallery</h2>
-            <div class="gallery">
-                <div class="gallery-item">[Photo 1]</div>
-                <div class="gallery-item">[Photo 2]</div>
-                <div class="gallery-item">[Photo 3]</div>
-                <div class="gallery-item">[Photo 4]</div>
-                <div class="gallery-item">[Photo 5]</div>
-                <div class="gallery-item">[Photo 6]</div>
             </div>
         </section>
 
@@ -543,31 +597,15 @@
             <div class="downloads-list">
                 <div class="download-item">
                     <div>
-                        <h4>Meeting Schedule</h4>
-                        <p>Fall 2025 calendar of all meetings and events</p>
+                        <h4>Conference Registration</h4>
+                        <p>Register your delegation for FHMUN 2026</p>
                     </div>
-                    <a href="#" class="download-btn">Download</a>
-                </div>
-                <div class="download-item">
-                    <div>
-                        <h4>Position Papers Guide</h4>
-                        <p>Template and guidelines for writing position papers</p>
-                    </div>
-                    <a href="#" class="download-btn">Download</a>
-                </div>
-                <div class="download-item">
-                    <div>
-                        <h4>Rules of Procedure</h4>
-                        <p>Official Model UN parliamentary procedures handbook</p>
-                    </div>
-                    <a href="#" class="download-btn">Download</a>
-                </div>
-                <div class="download-item">
-                    <div>
-                        <h4>Conference Information</h4>
-                        <p>Details about upcoming conferences and registration</p>
-                    </div>
-                    <a href="#" class="download-btn">Download</a>
+                    <a href="https://forms.gle/XTKvHCmjhbY7mEPs6" target="_blank" class="download-btn">
+                        <svg viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" d="M18.507 19.853V6.034C18.5116 5.49905 18.3034 4.98422 17.9283 4.60277C17.5532 4.22131 17.042 4.00449 16.507 4H8.50705C7.9721 4.00449 7.46085 4.22131 7.08577 4.60277C6.7107 4.98422 6.50252 5.49905 6.50705 6.034V19.853C6.45951 20.252 6.65541 20.6407 7.00441 20.8399C7.35342 21.039 7.78773 21.0099 8.10705 20.766L11.907 17.485C12.2496 17.1758 12.7705 17.1758 13.113 17.485L16.9071 20.767C17.2265 21.0111 17.6611 21.0402 18.0102 20.8407C18.3593 20.6413 18.5551 20.2522 18.507 19.853Z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg>
+                        <span>Register</span>
+                    </a>
                 </div>
             </div>
         </section>
@@ -575,17 +613,31 @@
         <section id="contact">
             <h2>Get In Touch</h2>
             <div class="about-content">
-                <p><strong>Email:</strong> [Insert club email]</p>
-                <p><strong>Meeting Location:</strong> [Insert room/building]</p>
-                <p><strong>Meeting Time:</strong> Wednesdays 3:05-3:30 PM</p>
-                <p><strong>Social Media:</strong> @fsusmun_</p>
-                <p>[Add any additional contact information or a note about how interested students can reach out]</p>
+                <p>
+                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span><strong>Meeting Time:</strong> Wednesdays 3:05-3:30 PM</span>
+                </p>
+                <p>
+                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    <span><strong>Social Media:</strong> @fsusmun_</span>
+                </p>
             </div>
         </section>
     </div>
 
     <footer>
-        <p>&copy; 2025 FSUS Model UN. All rights reserved.</p>
+        <p>Made by Ayush More</p>
+        <p style="font-weight: 700; font-size: 1.3rem; color: var(--gold); margin-top: 1rem; margin-bottom: 0.75rem;">GO NOLES</p>
+        <div style="max-width: 150px; margin: 0 auto 1.5rem auto;">
+            <img src="footer-banner.png" alt="FSU Banner" style="width: 100%; height: auto; display: block;">
+        </div>
         <p>Florida State University Schools</p>
         <div class="footer-links">
             <a href="#about">About</a>
